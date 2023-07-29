@@ -17,6 +17,18 @@ app.get('/getall', async  (req, res) => {
     res.end(jsonResponse);
 });
 
+app.get('/getone/:id', async (req, res) => { 
+    const id = req.params.id 
+    const light = await Light.findOne({where: {id: id}});
+    const responseObject = { 
+        message: light != null ? 'lampada encontrada!' : 'lampada não encontrada',
+        data: light != null ? light : {} 
+    }
+    res.setHeader('Content-type', 'application/json');
+    const jsonResponse = JSON.stringify(responseObject);
+    res.end(jsonResponse);
+})
+
 app.post('/newlight', (req, res) => { 
     Light.create(req.body).then(
         res.json({message: 'Lampada adicionada com sucesso'})
